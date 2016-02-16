@@ -6,13 +6,22 @@ public class Data {
 	
 	final private static int TOTAL_LAYERS = 2;
 	final private static int TOTAL_POSITIONS = 8;
-	static Node[][] nodes = new Node[TOTAL_LAYERS][TOTAL_POSITIONS];
+	static private Node[][] nodes = new Node[TOTAL_LAYERS][TOTAL_POSITIONS];
 	
 	boolean isBlueTurn;
 
 	public Data(){
 		reset();
 		chooseTurn();
+	}
+	
+	public void getColour(int layer, int index){
+		return nodes[layer][index].getColour();
+	}
+	
+	public void setColour(int layer. int index){
+		String col = (isBlueTurn)? "blue" : "red";
+		nodes[layer][index].setColour(col);
 	}
 	
 	public void reset(){
