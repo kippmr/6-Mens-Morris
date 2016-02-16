@@ -15,11 +15,11 @@ public class Data {
 		chooseTurn();
 	}
 	
-	public void getColour(int layer, int index){
+	public String getColour(int layer, int index){
 		return nodes[layer][index].getColour();
 	}
 	
-	public void setColour(int layer. int index){
+	public void setColour(int layer, int index){
 		String col = (isBlueTurn)? "blue" : "red";
 		nodes[layer][index].setColour(col);
 	}
