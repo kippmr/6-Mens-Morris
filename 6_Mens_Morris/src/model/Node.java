@@ -1,21 +1,18 @@
+package model;
 import javafx.scene.control.Button;
 
 
 public class Node extends Button{
 
+	// Node values
 	final private int layer;
 	final private int position;
 	private String colour;
-	
-	public Node(int l, int p){
+	 
+	public Node(int l, int p, String col){
 		layer = l;
 		position = p;
-	}
-	
-	public Node(){
-		layer = 0;
-		position = 0;
-		colour = null;
+		colour = col;
 	}
 	
 	public int getLayer(){
@@ -34,6 +31,7 @@ public class Node extends Button{
 		return colour;
 	}
 	
+	/* Has no use at the moment
 	public boolean isConnected(Node other){
 		if (this.layer == other.layer){
 			if (this.position+1 == other.position || this.position-1 == other.position)
@@ -48,4 +46,5 @@ public class Node extends Button{
 		
 		return false;
 	}
+	*/
 }
