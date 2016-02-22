@@ -1,11 +1,12 @@
 package controller;
-import model.Data;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import model.Data;
 
 
 public class CheckHandler implements EventHandler {
-	private boolean boardFilled;
 	private int redCount;
 	private int blueCount;
 	
@@ -23,10 +24,21 @@ public class CheckHandler implements EventHandler {
 			}
 		}
 		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Check");
+		alert.setHeaderText("Validation");
+
 		if (redCount <= 6 && blueCount <= 6)
-			System.out.println("This set-up is valid");
-		else {
-			System.out.println("This set-up is invalid");
-		}
+			alert.setContentText("This setup is valid.");
+		else
+			alert.setContentText("This setup is invalid. Cannot have more than 6 pieces of the same colour.");
+		
+		if ((redCount == 0 || blueCount == 0) && (redCount > 1 || blueCount >1))
+			alert.setContentText("This setup is invalid. Cannot have one colour having more than 1 "
+					+ "piece on the board while the other colour has none.");
+		else 
+			alert.setContentText("This setup is valid.");
+		
+		alert.showAndWait();
 	}
 }

@@ -33,6 +33,11 @@ public class Data {
 		chooseTurn();
 	}
 	
+	// Get turn
+	public static boolean getTurn(){
+		return isBlueTurn;
+	}
+	
 	// Next turn
 	public void changeTurn(){
 		isBlueTurn = !isBlueTurn;

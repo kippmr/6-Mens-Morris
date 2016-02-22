@@ -17,7 +17,8 @@ public class NodeHandler implements EventHandler {
 	
 	@Override
 	public void handle(Event event) {
-		Data.setColour(this.layer, this.index);
+		if (Data.getColour(layer, index).equals("black"))
+			Data.setColour(this.layer, this.index);
 		View.update();
 	}
 

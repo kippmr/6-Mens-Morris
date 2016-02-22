@@ -30,13 +30,17 @@ public class View extends Application{
 	// Menu Buttons
 	private Button onePlayer,twoPlayers,credits, exitButton, quitButton, returnButton;
 	// Buttons for controller logic
-	private Button reset,check,red,blue;
+	private Button reset,check;
+	private static Button red;
+	private static Button blue;
 	static //Node buttons
 	private Button[][] nodes = new Button[LAYERS][POSITIONS];
 	// Node Images
 	static private String blackNode = "-fx-background-image: url('/black.png')";
 	static private String redNode = "-fx-background-image: url('/red.png')";
 	static private String blueNode = "-fx-background-image: url('/blue.png')";
+	static private String redHighlight = "-fx-background-image: url('/redHighlight.png')";
+	static private String blueHighlight = "-fx-background-image: url('/blueHighlight.png')";
 	// Board Image
 	static private String boardImage = "-fx-background-image: url('/board.png')";
 	
@@ -46,6 +50,7 @@ public class View extends Application{
 		Data.reset();
 		// Launches the application
 		launch(args);
+		update();
 	}
 	
 	// Start Java fx stage
@@ -64,7 +69,7 @@ public class View extends Application{
 		
 		// set labels
 		Label label1 = new Label("Six Man's Morris");
-		Label label2 = new Label("Make your move");
+		Label label2 = new Label("Change the turn by clicking a piece on the side");
 		Label label3 = new Label("Model: William Tran\nView: Ben Miller\nController: Matt Kipp");
 		
 		// Creating button
@@ -99,12 +104,20 @@ public class View extends Application{
 		
 		// Select red before placing a red piece
 		red = new Button();
-		red.setText("Red");
+		red.setPrefSize(40, 40);
+		red.setMinSize(40, 40);
+		red.setMaxSize(40, 40);
+		red.setStyle(redNode);
+		if (!Data.getTurn()) red.setStyle(redHighlight);
 		red.setOnAction(new ColourHandler("red"));
 		
 		// Select blue before placing a blue piece
 		blue = new Button();
-		blue.setText("Blue");
+		blue.setPrefSize(40, 40);
+		blue.setMinSize(40, 40);
+		blue.setMaxSize(40, 40);
+		blue.setStyle(blueNode);
+		if (Data.getTurn()) blue.setStyle(blueHighlight);
 		blue.setOnAction(new ColourHandler("blue"));
 		
 		// Checks valid piece placement
@@ -221,6 +234,15 @@ public class View extends Application{
 				else
 					nodes[i][j].setStyle(blackNode);
 			}
+		}
+		
+		if (Data.getTurn()){
+			blue.setStyle(blueHighlight);
+			red.setStyle(redNode);
+		}
+		else{
+			blue.setStyle(blueNode);
+			red.setStyle(redHighlight);
 		}
 	}
 }
