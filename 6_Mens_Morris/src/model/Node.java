@@ -9,12 +9,14 @@ public class Node extends Button{
 	final private int position;
 	private String colour;
 	 
+	// setup coordinate and colour of the node
 	public Node(int l, int p, String col){
 		layer = l;
 		position = p;
 		colour = col;
 	}
 	
+	// getters
 	public int getLayer(){
 		return layer;
 	}
@@ -23,12 +25,13 @@ public class Node extends Button{
 		return position;
 	}
 	
-	public void setColour(String col){
-		colour = col;
-	}
-	
 	public String getColour(){
 		return colour;
+	}
+	
+	// set colour
+	public void setColour(String col){
+		colour = col;
 	}
 	
 	/* Has no use at the moment
