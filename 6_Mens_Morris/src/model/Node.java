@@ -34,7 +34,6 @@ public class Node extends Button{
 		colour = col;
 	}
 	
-	/* Has no use at the moment
 	public boolean isConnected(Node other){
 		if (this.layer == other.layer){
 			if (this.position+1 == other.position || this.position-1 == other.position)
@@ -49,5 +48,4 @@ public class Node extends Button{
 		
 		return false;
 	}
-	*/
 }

@@ -62,7 +62,7 @@ public class View extends Application{
 		
 		window = primaryStage;
 		// Set stage title
-		primaryStage.setTitle("Six Man's Morris");
+		primaryStage.setTitle("Six Men's Morris");
 		
 		// if user manually clicks close button then run set close method
 		window.setOnCloseRequest(e ->{
@@ -70,7 +70,7 @@ public class View extends Application{
 			closeProgram();
 		});
 		// set labels
-		Label label1 = new Label("Six Man's Morris\nÂ ");
+		Label label1 = new Label("Six Men's Morris\n ");
 		label1.setFont(new Font(35));
 		//Label label2 = new Label("Change the turn by clicking a piece on the side");
 		Label label3 = new Label("Model: William Tran\nView: Ben Miller\nController: Matt Kipp");
