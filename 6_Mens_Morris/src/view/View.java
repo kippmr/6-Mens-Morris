@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 public class View extends Application{
@@ -28,7 +29,7 @@ public class View extends Application{
 	private Stage window;
 	private Scene mainScene,boardScene,creditScene;
 	// Menu Buttons
-	private Button onePlayer,twoPlayers,credits, exitButton, quitButton, returnButton;
+	private Button onePlayer,twoPlayers,sandBox,credits, exitButton, quitButton, returnButton;
 	// Buttons for controller logic
 	private Button reset,check;
 	private static Button red;
@@ -43,6 +44,8 @@ public class View extends Application{
 	static private String blueHighlight = "-fx-background-image: url('/blueHighlight.png')";
 	// Board Image
 	static private String boardImage = "-fx-background-image: url('/board.png')";
+	// Win state
+	static private String result = "Game in progress";
 	
 	
 	public static void main(String[] args){
@@ -66,21 +69,33 @@ public class View extends Application{
 			e.consume();
 			closeProgram();
 		});
-		
 		// set labels
-		Label label1 = new Label("Six Man's Morris");
-		Label label2 = new Label("Change the turn by clicking a piece on the side");
+		Label label1 = new Label("Six Man's Morris\n ");
+		label1.setFont(new Font(35));
+		//Label label2 = new Label("Change the turn by clicking a piece on the side");
 		Label label3 = new Label("Model: William Tran\nView: Ben Miller\nController: Matt Kipp");
-		
+		Label winState = new Label(result);
 		// Creating button
 		onePlayer= new Button();
-		onePlayer.setText("1 Player");
-		onePlayer.setOnAction(e -> window.setScene(boardScene));
-		
-		// 2 Players option
+		onePlayer.setText("NEW GAME");
+		onePlayer.setOnAction(e -> {
+		Data.reset();
+		View.update();
+		window.setScene(boardScene);
+		});
+		// Load Previous Game
 		twoPlayers = new Button();
-		twoPlayers.setText("2 Players");
-		twoPlayers.setOnAction(e -> window.setScene(boardScene));
+		twoPlayers.setText("LOAD GAME");
+		twoPlayers.setOnAction(e -> 
+		window.setScene(boardScene));
+		
+		// Sand box mode
+		sandBox = new Button();
+		sandBox.setText("SANDBOX MODE");
+		sandBox.setOnAction(e -> {
+		Data.reset();
+		View.update();
+		window.setScene(boardScene);});
 		
 		// Credits Option
 		credits = new Button();
@@ -89,7 +104,7 @@ public class View extends Application{
 		
 		// Exit program button / handler
 		exitButton = new Button();
-		exitButton.setText("Exit");
+		exitButton.setText("EXIT");
 		exitButton.setOnAction(e -> closeProgram());
 		
 		// Return to main menu button
@@ -144,7 +159,8 @@ public class View extends Application{
 		
 		// Main Screen layout
 		VBox layout1 = new VBox(20);
-		layout1.getChildren().addAll(label1,onePlayer,twoPlayers,credits,exitButton);
+		layout1.getChildren().addAll(label1,onePlayer,twoPlayers,sandBox,exitButton);
+		// Removed credits for simplicity
 		mainScene = new Scene(layout1,WIDTH, HEIGHT);
 		
 		// Board game layout
@@ -161,7 +177,7 @@ public class View extends Application{
 		HBox topPane = new HBox();
 		VBox leftPane = new VBox(20);
 		VBox rightPane = new VBox(20);
-		topPane.getChildren().add(label2);
+		topPane.getChildren().add(winState);
 		bottomPane.getChildren().addAll(reset, check, quitButton);
 		leftPane.getChildren().add(blue);
 		rightPane.getChildren().add(red);
@@ -246,4 +262,3 @@ public class View extends Application{
 		}
 	}
 }
-
