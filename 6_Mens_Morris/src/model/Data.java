@@ -117,4 +117,132 @@ public class Data {
 		Random random = new Random();
 		isBlueTurn = random.nextInt(2) % 2 == 0;
 	}
+	
+	//determine if a player has won
+	private static boolean checkWin(){
+		
+		return false;
+	}
+	
+	//check for any triples on board
+	public static String boardTriple(){
+		String selectedCol;
+		
+		//check outer layer
+		selectedCol = nodes[0][0].getColour();
+		if (nodes[0][1].getColour().equals(selectedCol) && nodes[0][2].getColour().equals(selectedCol))
+			return selectedCol;
+		selectedCol = nodes[0][0].getColour();
+		if (nodes[0][7].getColour().equals(selectedCol) && nodes[0][6].getColour().equals(selectedCol))
+			return selectedCol;
+		selectedCol = nodes[0][4].getColour();
+		if (nodes[0][3].getColour().equals(selectedCol) && nodes[0][2].getColour().equals(selectedCol))
+			return selectedCol;
+		selectedCol = nodes[0][4].getColour();
+		if (nodes[0][5].getColour().equals(selectedCol) && nodes[0][6].getColour().equals(selectedCol))
+			return selectedCol;	
+		
+		//check inner layer
+		selectedCol = nodes[1][0].getColour();
+		if (nodes[1][1].getColour().equals(selectedCol) && nodes[1][2].getColour().equals(selectedCol))
+			return selectedCol;
+		selectedCol = nodes[1][0].getColour();
+		if (nodes[1][7].getColour().equals(selectedCol) && nodes[1][6].getColour().equals(selectedCol))
+			return selectedCol;
+		selectedCol = nodes[1][4].getColour();
+		if (nodes[1][3].getColour().equals(selectedCol) && nodes[1][2].getColour().equals(selectedCol))
+			return selectedCol;
+		selectedCol = nodes[1][4].getColour();
+		if (nodes[1][5].getColour().equals(selectedCol) && nodes[1][6].getColour().equals(selectedCol))
+			return selectedCol;
+		
+		//when nothing is true
+		return "none";
+	}
+	
+	//check if a specific node is part of a triple
+	public static boolean singleTriple(int layer, int index){
+		String selectedCol = nodes[layer][index].getColour();
+		
+		//check outer layer
+		if (layer == 0){
+			if (index == 0) {
+				if (nodes[0][1].getColour().equals(selectedCol) && nodes[0][2].getColour().equals(selectedCol))
+					return true;
+				if (nodes[0][7].getColour().equals(selectedCol) && nodes[0][6].getColour().equals(selectedCol))
+					return true;
+			} if (index == 1) {
+				if (nodes[0][0].getColour().equals(selectedCol) && nodes[0][2].getColour().equals(selectedCol))
+					return true;
+			} if (index == 2) {
+				if (nodes[0][0].getColour().equals(selectedCol) && nodes[0][1].getColour().equals(selectedCol))
+					return true;
+				if (nodes[0][3].getColour().equals(selectedCol) && nodes[0][4].getColour().equals(selectedCol))
+					return true;
+			} if (index == 3) {
+				if (nodes[0][2].getColour().equals(selectedCol) && nodes[0][4].getColour().equals(selectedCol))
+					return true;
+			} if (index == 4) {
+				if (nodes[0][2].getColour().equals(selectedCol) && nodes[0][3].getColour().equals(selectedCol))
+					return true;
+				if (nodes[0][5].getColour().equals(selectedCol) && nodes[0][6].getColour().equals(selectedCol))
+					return true;
+			} if (index == 5) {
+				if (nodes[0][4].getColour().equals(selectedCol) && nodes[0][6].getColour().equals(selectedCol))
+					return true;
+			} if (index == 6) {
+				if (nodes[0][4].getColour().equals(selectedCol) && nodes[0][5].getColour().equals(selectedCol))
+					return true;
+				if (nodes[0][7].getColour().equals(selectedCol) && nodes[0][0].getColour().equals(selectedCol))
+					return true;
+			}if (index == 7) {
+				if (nodes[0][6].getColour().equals(selectedCol) && nodes[0][0].getColour().equals(selectedCol))
+					return true;
+			}
+		}
+		//check inner layer
+		else if (layer == 1){
+			if (index == 0) {
+				if (nodes[1][1].getColour().equals(selectedCol) && nodes[1][2].getColour().equals(selectedCol))
+					return true;
+				if (nodes[1][7].getColour().equals(selectedCol) && nodes[1][6].getColour().equals(selectedCol))
+					return true;
+			} if (index == 1) {
+				if (nodes[1][0].getColour().equals(selectedCol) && nodes[1][2].getColour().equals(selectedCol))
+					return true;
+			} if (index == 2) {
+				if (nodes[1][0].getColour().equals(selectedCol) && nodes[1][1].getColour().equals(selectedCol))
+					return true;
+				if (nodes[1][3].getColour().equals(selectedCol) && nodes[1][4].getColour().equals(selectedCol))
+					return true;
+			} if (index == 3) {
+				if (nodes[1][2].getColour().equals(selectedCol) && nodes[1][4].getColour().equals(selectedCol))
+					return true;
+			} if (index == 4) {
+				if (nodes[1][2].getColour().equals(selectedCol) && nodes[1][3].getColour().equals(selectedCol))
+					return true;
+				if (nodes[1][5].getColour().equals(selectedCol) && nodes[1][6].getColour().equals(selectedCol))
+					return true;
+			} if (index == 5) {
+				if (nodes[1][4].getColour().equals(selectedCol) && nodes[1][6].getColour().equals(selectedCol))
+					return true;
+			} if (index == 6) {
+				if (nodes[1][4].getColour().equals(selectedCol) && nodes[1][5].getColour().equals(selectedCol))
+					return true;
+				if (nodes[1][7].getColour().equals(selectedCol) && nodes[1][0].getColour().equals(selectedCol))
+					return true;
+			}if (index == 7) {
+				if (nodes[1][6].getColour().equals(selectedCol) && nodes[1][0].getColour().equals(selectedCol))
+					return true;
+			}
+		}
+		
+		//when nothing is true
+		return false;
+	}
+	
+	//perform a mill
+	private static void mill(){
+		
+	}
 }
