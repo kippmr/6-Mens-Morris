@@ -25,16 +25,16 @@ public class Data {
 	// Current state
 	private static GameState curState;
 	
+	public static int getNumPieces(){
+		return numPieces;
+	}
+
 	public static int getBlueCount(){
 		return blueCount;
 	}
 	
 	public static int getRedCount(){
 		return redCount;
-	}
-	
-	public static int getNumPieces(){
-		return numPieces;
 	}
 	
 	// Set state
@@ -88,6 +88,7 @@ public class Data {
 		numPieces = 0;
 		redCount = 0;
 		blueCount = 0;
+		moveNode = null;
 		chooseTurn();
 	}
 	
@@ -130,8 +131,6 @@ public class Data {
 		
 		return true;
 	}
-	
-	//check for any triples on board
 	
 	//check if a specific node is part of a triple
 	public static boolean singleTriple(int layer, int index){
@@ -306,5 +305,7 @@ public class Data {
 			nodes[0][i].setColour(outerCol[i]);
 			nodes[1][i].setColour(innerCol[i]);
 		}
+		
+		moveNode = null;
 	}
 }

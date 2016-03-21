@@ -23,58 +23,78 @@ public class NodeHandler implements EventHandler {
 		switch (currentState){
 		
 		case SANDBOX:
-			if (Data.getColour(layer, index).equals("black"))
-				Data.setColour(this.layer, this.index);
-			View.update();
+			sandboxPhase();
 			break;
 			
 		case PLACEMENT:
-			if (Data.getColour(layer, index).equals("black")){
-				Data.setColour(this.layer, this.index);
-				Data.changeTurn();
-			}
-			if (Data.getNumPieces() == 12)
-				Data.setState(GameState.MOVEMENT);
-			if (Data.singleTriple(layer, index)){
-				Data.setState(GameState.MILL);
-				Data.changeTurn();
-			}
-			View.update();
+			placementPhase();
 			break;
 			
 		case MOVEMENT:
-			// set node to move
-			String col = (Data.getTurn())? "blue" : "red";
-			if (col.equals(Data.getColour(layer, index))){
-				Data.setMove(layer, index, col);
-				System.out.println("MOVE FOUND");
-			}
-			else{
-				System.out.println("SELECT A PIECE TO MOVE");
-			}
-			
-			// move the node
-			if (Data.getColour(layer, index).equals("black") && Data.hasMove()){
-				if (Data.canMove(layer, index)){
-					Data.swapNode(layer, index);
-					if (Data.singleTriple(layer, index))
-						Data.setState(GameState.MILL);
-					else Data.changeTurn();
-					if (Data.checkWin()){
-						Data.setState(GameState.ENDGAME);
-						if (Data.getTurn())
-							System.out.println("RED WON");
-						else
-							System.out.println("BLUE WON");
-					}
-				}
-			}
-			else System.out.println("Not a valid place to move" + Data.hasMove());
-			View.update();
+			movementPhase();
 			break;
 			
 		case MILL:
-			String oppCol = (Data.getTurn())? "red" : "blue";
+			millPhase();
+			break;
+		}
+	}
+
+	private void sandboxPhase(){
+		if (Data.getColour(layer, index).equals("black"))
+			Data.setColour(this.layer, this.index);
+		View.update();
+	}
+	
+	private void placementPhase(){
+		if (Data.getColour(layer, index).equals("black")){
+			Data.setColour(this.layer, this.index);
+			Data.changeTurn();
+		}
+		if (Data.getNumPieces() == 12)
+			Data.setState(GameState.MOVEMENT);
+		if (Data.singleTriple(layer, index)){
+			Data.setState(GameState.MILL);
+			Data.changeTurn();
+		}
+		View.update();
+	}
+	
+	private void movementPhase(){
+		// set node to move
+		String col = (Data.getTurn())? "blue" : "red";
+		if (col.equals(Data.getColour(layer, index))){
+			Data.setMove(layer, index, col);
+			System.out.println("MOVE FOUND");
+		}
+		else{
+			System.out.println("SELECT A PIECE TO MOVE");
+		}
+		
+		// move the node
+		if (Data.getColour(layer, index).equals("black") && Data.hasMove()){
+			if (Data.canMove(layer, index)){
+				Data.swapNode(layer, index);
+				if (Data.singleTriple(layer, index))
+					Data.setState(GameState.MILL);
+				else Data.changeTurn();
+				if (Data.checkWin()){
+					Data.setState(GameState.ENDGAME);
+					if (Data.getTurn())
+						System.out.println("RED WON");
+					else
+						System.out.println("BLUE WON");
+				}
+			}
+		}
+		else System.out.println("Not a valid place to move" + Data.hasMove());
+		View.update();
+	}
+	
+	private void millPhase(){
+		String oppCol = (Data.getTurn())? "red" : "blue";
+		int oppCount = (Data.getTurn())? Data.getRedCount() : Data.getBlueCount();
+		if (!Data.singleTriple(layer, index) || oppCount == 3){
 			if (oppCol.equals(Data.getColour(layer, index))){
 				Data.mill(layer, index);
 				if (Data.getNumPieces() == 12) Data.setState(GameState.MOVEMENT);
@@ -89,8 +109,6 @@ public class NodeHandler implements EventHandler {
 				}
 				View.update();
 			}
-			break;
 		}
 	}
-
 }

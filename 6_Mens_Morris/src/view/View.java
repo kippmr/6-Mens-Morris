@@ -283,9 +283,9 @@ public class View extends Application{
 		break;
 		case MILL:
 			if (Data.getTurn())
-				curState.setText("BLUE'S MOVE: REMOVE A RED PIECE");
+				curState.setText("BLUE'S MOVE: REMOVE A RED PIECE NOT IN A MILL");
 			else
-				curState.setText("RED'S MOVE: REMOVE A BLUE PIECE");
+				curState.setText("RED'S MOVE: REMOVE A BLUE PIECE NOT IN A MILL");
 			break;
 		case ENDGAME:
 			if (Data.getTurn())
