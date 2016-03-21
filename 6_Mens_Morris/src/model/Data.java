@@ -1,5 +1,9 @@
 package model;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.Random;
+import java.util.Scanner;
 
 
 public class Data {
@@ -33,16 +37,6 @@ public class Data {
 		return numPieces;
 	}
 	
-	public static void increaseCount(String col){
-		if (col.equals("blue")) blueCount++;
-		else redCount++;
-	}
-	
-	public static void decreaseCount(String col){
-		if (col.equals("blue")) blueCount--;
-		else redCount--;
-	}
-	
 	// Set state
 	public static void setState(GameState nextState){
 		curState = nextState;
@@ -63,7 +57,8 @@ public class Data {
 		String col = (isBlueTurn)? "blue" : "red";
 		nodes[layer][index].setColour(col);
 		if (curState.equals(GameState.PLACEMENT)){
-			increaseCount(col);
+			if (col.equals("blue")) blueCount++;
+			else redCount++;
 			numPieces++;
 		}
 	}
@@ -78,7 +73,7 @@ public class Data {
 
 	public static void swapNode(int layer, int index) {
 		nodes[moveNode.getLayer()][moveNode.getPosition()].setColour("black");
-		nodes[layer][index] = moveNode;
+		nodes[layer][index].setColour(moveNode.getColour());
 		moveNode = null;
 	}
 	
@@ -100,7 +95,7 @@ public class Data {
 	}
 	
 	// Next turn
-	public void changeTurn(){
+	public static void changeTurn(){
 		isBlueTurn = !isBlueTurn;
 	}
 	
@@ -115,13 +110,23 @@ public class Data {
 	// Randomize turn order
 	private static void chooseTurn(){
 		Random random = new Random();
-		isBlueTurn = random.nextInt(2) % 2 == 0;
+		isBlueTurn = random.nextInt(2) == 0;
 	}
 	
 	//determine if a player has won
-	private static boolean checkWin(){
+	public static boolean checkWin(){
+		if ((redCount == 2 || blueCount == 2) && numPieces == 12) return true;
+		String col = (isBlueTurn)? "blue" : "red";
 		
-		return false;
+		for (int i = 0; i < nodes.length; i++) {
+			for (int j = 0; j < nodes[i].length; j++) {
+				if (nodes[i][j].getColour().equals(col)){
+					if (ableToMove(i, j)) return false;
+				}
+			}
+		}
+		
+		return true;
 	}
 	
 	//check for any triples on board
@@ -242,7 +247,98 @@ public class Data {
 	}
 	
 	//perform a mill
-	private static void mill(){
+	public static void mill(int layer, int index){
+		String col = nodes[layer][index].getColour();
+		nodes[layer][index].setColour("black");
+		if (col.equals("red")) redCount--;
+		else blueCount--;
+	}
+
+	public static boolean hasMove() {
+		return moveNode != null;
+	}
+	
+	private static boolean ableToMove(int layer, int index){
+		if (index % 2 == 1){
+			if (layer == 1){
+				if (nodes[0][index].getColour().equals("black")) return true;
+			}
+			else if (layer == 0){
+				if (nodes[1][index].getColour().equals("black")) return true;
+			}
+		}
+		if (index == 0){
+			if (nodes[layer][7].getColour().equals("black")) return true;
+		}
+		else if (nodes[layer][index-1].getColour().equals("black")) return true;
 		
+		if (index == 7){
+			if (nodes[layer][0].getColour().equals("black")) return true;
+		}
+		else if (nodes[layer][index+1].getColour().equals("black")) return true;
+		
+		return false;
+	}
+
+	public static void save() {
+		String out = "";
+		out = out.concat(curState.toString() + ",");
+		out = out.concat(Boolean.toString(isBlueTurn) + ",");
+		out = out.concat(Integer.toString(numPieces) + ",");
+		out = out.concat(Integer.toString(blueCount) + ",");
+		out = out.concat(Integer.toString(redCount) + "\n");
+		
+		for (int i = 0; i < nodes[0].length-1; i++) {
+			out = out.concat(nodes[0][i].getColour() + ",");
+		}
+		out = out.concat(nodes[0][7].getColour() + "\n");
+		
+		for (int i = 0; i < nodes[1].length-1; i++) {
+			out = out.concat(nodes[1][i].getColour() + ",");
+		}
+		out = out.concat(nodes[1][7].getColour() + "\n");
+		
+		try{
+			//writing results to output.txt
+			FileWriter f = new FileWriter("savefile.txt");
+			f.write(out);
+			f.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void load() throws FileNotFoundException{
+		File f = new File("savefile.txt");
+		Scanner s = new Scanner(f);
+		String[] data = s.nextLine().split(",");
+		String[] outerCol = s.nextLine().split(",");
+		String[] innerCol = s.nextLine().split(",");
+		s.close();
+		
+		if (data[0].equals("SANDBOX"))
+			setState(GameState.SANDBOX);
+		else if (data[0].equals("PLACEMENT"))
+			setState(GameState.PLACEMENT);
+		else if (data[0].equals("MOVEMENT"))
+			setState(GameState.MOVEMENT);
+		else if (data[0].equals("MILL"))
+			setState(GameState.MILL);
+		else if (data[0].equals("ENDGAME"))
+			setState(GameState.ENDGAME);
+		
+		if (data[1].equals("blue"))
+			isBlueTurn = true;
+		else isBlueTurn = false;
+
+		numPieces = Integer.parseInt(data[2]);
+		blueCount = Integer.parseInt(data[3]);
+		redCount = Integer.parseInt(data[4]);
+
+		for (int i = 0; i < 8; i++){
+			nodes[0][i].setColour(outerCol[i]);
+			nodes[1][i].setColour(outerCol[i]);
+		}
 	}
 }

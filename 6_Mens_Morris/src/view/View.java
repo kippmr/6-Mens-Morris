@@ -5,6 +5,7 @@ import controller.ColourHandler;
 import controller.NodeHandler;
 import controller.ResetHandler;
 import model.Data;
+import model.GameState;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,9 +30,9 @@ public class View extends Application{
 	private Stage window;
 	private Scene mainScene,boardScene,creditScene;
 	// Menu Buttons
-	private Button onePlayer,twoPlayers,sandBox,credits, exitButton, quitButton, returnButton;
+	private Button newGameBtn, loadBtn, sandBox, exitButton, quitButton;
 	// Buttons for controller logic
-	private Button reset,check;
+	private Button reset, check, save;
 	private static Button red;
 	private static Button blue;
 	static //Node buttons
@@ -73,34 +74,31 @@ public class View extends Application{
 		Label label1 = new Label("Six Men's Morris\n ");
 		label1.setFont(new Font(35));
 		//Label label2 = new Label("Change the turn by clicking a piece on the side");
-		Label label3 = new Label("Model: William Tran\nView: Ben Miller\nController: Matt Kipp");
 		Label winState = new Label(result);
 		// Creating button
-		onePlayer= new Button();
-		onePlayer.setText("NEW GAME");
-		onePlayer.setOnAction(e -> {
+		newGameBtn= new Button();
+		newGameBtn.setText("NEW GAME");
+		newGameBtn.setOnAction(e -> {
+		Data.setState(GameState.PLACEMENT);
 		Data.reset();
 		View.update();
 		window.setScene(boardScene);
 		});
 		// Load Previous Game
-		twoPlayers = new Button();
-		twoPlayers.setText("LOAD GAME");
-		twoPlayers.setOnAction(e -> 
-		window.setScene(boardScene));
+		loadBtn = new Button();
+		loadBtn.setText("LOAD GAME");
+		loadBtn.setOnAction(e ->  {
+		Data.setState(GameState.PLACEMENT);
+		window.setScene(boardScene);});
 		
 		// Sand box mode
 		sandBox = new Button();
 		sandBox.setText("SANDBOX MODE");
 		sandBox.setOnAction(e -> {
+		Data.setState(GameState.SANDBOX);
 		Data.reset();
 		View.update();
 		window.setScene(boardScene);});
-		
-		// Credits Option
-		credits = new Button();
-		credits.setText("Credits");
-		credits.setOnAction(e -> window.setScene(creditScene));
 		
 		// Exit program button / handler
 		exitButton = new Button();
@@ -111,11 +109,6 @@ public class View extends Application{
 		quitButton = new Button();
 		quitButton.setText("Quit");
 		quitButton.setOnAction(e -> window.setScene(mainScene));
-		
-		// Returns from credit screen to main screen
-		returnButton = new Button();
-		returnButton.setText("Return");
-		returnButton.setOnAction(e -> window.setScene(mainScene));
 		
 		// Select red before placing a red piece
 		red = new Button();
@@ -145,6 +138,11 @@ public class View extends Application{
 		reset.setText("Reset");
 		reset.setOnAction(new ResetHandler());
 		
+		// Save game state
+		save = new Button();
+		save.setText("Save");
+		save.setOnAction(e -> Data.save());
+		
 		// Add event handler to nodes, setup size and image
 		for (int i = 0; i < nodes.length; i++) {
 			for (int j = 0; j < nodes[i].length; j++) {
@@ -159,7 +157,7 @@ public class View extends Application{
 		
 		// Main Screen layout
 		VBox layout1 = new VBox(20);
-		layout1.getChildren().addAll(label1,onePlayer,twoPlayers,sandBox,exitButton);
+		layout1.getChildren().addAll(label1,newGameBtn,loadBtn,sandBox,exitButton);
 		// Removed credits for simplicity
 		mainScene = new Scene(layout1,WIDTH, HEIGHT);
 		
@@ -189,14 +187,8 @@ public class View extends Application{
 		layout2.setStyle(boardImage);
 		boardScene = new Scene(layout2,WIDTH, HEIGHT);
 		
-		// Credit Screen layout
-		VBox layout3 = new VBox(20);
-		layout3.getChildren().addAll(label3,returnButton);
-		creditScene = new Scene(layout3,WIDTH, HEIGHT);
-		
 		// Center the buttons
 		layout1.setAlignment(Pos.CENTER);
-		layout3.setAlignment(Pos.CENTER);
 		topPane.setAlignment(Pos.CENTER);
 		bottomPane.setAlignment(Pos.CENTER);
 		leftPane.setAlignment(Pos.CENTER);

@@ -36,12 +36,10 @@ public class Node extends Button{
 	
 	public boolean isConnected(Node other){
 		if (this.layer == other.layer){
-			if (this.position+1 == other.position || this.position-1 == other.position)
-				return true;
-			else if (this.position == 0 && other.position == 7)
+			if (Math.abs(this.position - other.position) == 1 || Math.abs(this.position - other.position) == 7)
 				return true;
 		}
-		else if (this.layer+1 == other.layer || this.layer-1 == other.layer){
+		else if (this.layer != other.layer){
 			if (this.position == other.position)
 				return true;
 		}
