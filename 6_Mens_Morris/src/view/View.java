@@ -48,6 +48,10 @@ public class View extends Application{
 	// Board Image
 	static private String boardImage = "-fx-background-image: url('/board.png')";
 	
+	/**
+	 * Begins the game by launching the GUI and resetting values
+	 * @param args - customised user input, not needed 
+	 */
 	public static void main(String[] args){
 		// Sets up the board
 		Data.reset();
@@ -70,7 +74,7 @@ public class View extends Application{
 			closeProgram();
 		});
 		// set labels
-		Label label1 = new Label("Six Men's Morris\n ");
+		Label label1 = new Label("Six Men's Morris\nÂ ");
 		label1.setFont(new Font(35));
 		//Label label2 = new Label("Change the turn by clicking a piece on the side");
 		curState = new Label();
@@ -214,7 +218,9 @@ public class View extends Application{
 		window.setScene(mainScene);
 		window.show();
 	}
-
+	/**
+	 * Begins the close program process by calling confirm box exit prompt
+	 */ 
 	private void closeProgram(){
 		boolean exitProgram = ConfirmBox.display("Exit","Are you sure you want to exit?");
 		if(exitProgram){
@@ -247,6 +253,9 @@ public class View extends Application{
 	}
 	
 	// Change node icons according to value
+	/**
+	 * Update function which updates the game board when called
+	 */
 	public static void update(){
 		for (int i = 0; i < LAYERS; i++) {
 			for (int j = 0; j < POSITIONS; j++){
