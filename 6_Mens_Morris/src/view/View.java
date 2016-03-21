@@ -28,9 +28,11 @@ public class View extends Application{
 	final static private int POSITIONS = 8;
 	
 	private Stage window;
-	private Scene mainScene,boardScene,creditScene;
+	private Scene mainScene,sandboxScene, gameScene;
 	// Menu Buttons
 	private Button newGameBtn, loadBtn, sandBox, exitButton, quitButton;
+	// State label
+	private static Label curState;
 	// Buttons for controller logic
 	private Button reset, check, save;
 	private static Button red;
@@ -45,9 +47,6 @@ public class View extends Application{
 	static private String blueHighlight = "-fx-background-image: url('/blueHighlight.png')";
 	// Board Image
 	static private String boardImage = "-fx-background-image: url('/board.png')";
-	// Win state
-	static private String result = "Game in progress";
-	
 	
 	public static void main(String[] args){
 		// Sets up the board
@@ -74,22 +73,26 @@ public class View extends Application{
 		Label label1 = new Label("Six Men's Morris\n ");
 		label1.setFont(new Font(35));
 		//Label label2 = new Label("Change the turn by clicking a piece on the side");
-		Label winState = new Label(result);
+		curState = new Label();
 		// Creating button
 		newGameBtn= new Button();
 		newGameBtn.setText("NEW GAME");
 		newGameBtn.setOnAction(e -> {
-		Data.setState(GameState.PLACEMENT);
 		Data.reset();
 		View.update();
-		window.setScene(boardScene);
+		window.setScene(gameScene);
 		});
 		// Load Previous Game
 		loadBtn = new Button();
 		loadBtn.setText("LOAD GAME");
 		loadBtn.setOnAction(e ->  {
-		Data.setState(GameState.PLACEMENT);
-		window.setScene(boardScene);});
+		try {
+			Data.load();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		update();
+		window.setScene(gameScene);});
 		
 		// Sand box mode
 		sandBox = new Button();
@@ -98,7 +101,7 @@ public class View extends Application{
 		Data.setState(GameState.SANDBOX);
 		Data.reset();
 		View.update();
-		window.setScene(boardScene);});
+		window.setScene(sandboxScene);});
 		
 		// Exit program button / handler
 		exitButton = new Button();
@@ -175,7 +178,7 @@ public class View extends Application{
 		HBox topPane = new HBox();
 		VBox leftPane = new VBox(20);
 		VBox rightPane = new VBox(20);
-		topPane.getChildren().add(winState);
+		topPane.getChildren().add(curState);
 		bottomPane.getChildren().addAll(reset, check, quitButton);
 		leftPane.getChildren().add(blue);
 		rightPane.getChildren().add(red);
@@ -185,7 +188,19 @@ public class View extends Application{
 		layout2.setTop(topPane);
 		layout2.setCenter(addGrid());
 		layout2.setStyle(boardImage);
-		boardScene = new Scene(layout2,WIDTH, HEIGHT);
+		sandboxScene = new Scene(layout2,WIDTH, HEIGHT);
+		
+		BorderPane layout3 = new BorderPane();
+		layout3.setPadding(new Insets(15, 15, 15, 15));
+		HBox bottomGamePane = new HBox(50);
+		bottomGamePane.getChildren().addAll(save, quitButton);
+		layout3.setBottom(bottomGamePane);
+		layout3.setLeft(leftPane);
+		layout3.setRight(rightPane);
+		layout3.setTop(topPane);
+		layout3.setCenter(addGrid());
+		layout3.setStyle(boardImage);
+		gameScene = new Scene(layout3, WIDTH, HEIGHT);
 		
 		// Center the buttons
 		layout1.setAlignment(Pos.CENTER);
@@ -193,6 +208,7 @@ public class View extends Application{
 		bottomPane.setAlignment(Pos.CENTER);
 		leftPane.setAlignment(Pos.CENTER);
 		rightPane.setAlignment(Pos.CENTER);
+		bottomGamePane.setAlignment(Pos.CENTER);	
 		
 		// Sets initial scene and displays Window
 		window.setScene(mainScene);
@@ -251,6 +267,32 @@ public class View extends Application{
 		else{
 			blue.setStyle(blueNode);
 			red.setStyle(redHighlight);
+		}
+		switch(Data.getState()){
+		case PLACEMENT:
+			if (Data.getTurn())
+				curState.setText("BLUE'S MOVE: PLACE A PIECE");
+			else
+				curState.setText("RED'S MOVE: PLACE A PIECE");
+			break;
+		case MOVEMENT:
+		if (Data.getTurn())
+			curState.setText("BLUE'S MOVE: MOVE A PIECE");
+		else
+			curState.setText("RED'S MOVE: MOVE A PIECE");
+		break;
+		case MILL:
+			if (Data.getTurn())
+				curState.setText("BLUE'S MOVE: REMOVE A RED PIECE");
+			else
+				curState.setText("RED'S MOVE: REMOVE A BLUE PIECE");
+			break;
+		case ENDGAME:
+			if (Data.getTurn())
+				curState.setText("RED WINS!!!");
+			else
+				curState.setText("BLUE WINS!!!");
+			break;
 		}
 	}
 }

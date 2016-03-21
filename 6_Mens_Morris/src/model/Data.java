@@ -84,6 +84,8 @@ public class Data {
 				nodes[i][j] = new Node(i,j, "black");
 			}
 		}
+		curState = GameState.PLACEMENT;
+		numPieces = 0;
 		redCount = 0;
 		blueCount = 0;
 		chooseTurn();
@@ -130,40 +132,6 @@ public class Data {
 	}
 	
 	//check for any triples on board
-	public static String boardTriple(){
-		String selectedCol;
-		
-		//check outer layer
-		selectedCol = nodes[0][0].getColour();
-		if (nodes[0][1].getColour().equals(selectedCol) && nodes[0][2].getColour().equals(selectedCol))
-			return selectedCol;
-		selectedCol = nodes[0][0].getColour();
-		if (nodes[0][7].getColour().equals(selectedCol) && nodes[0][6].getColour().equals(selectedCol))
-			return selectedCol;
-		selectedCol = nodes[0][4].getColour();
-		if (nodes[0][3].getColour().equals(selectedCol) && nodes[0][2].getColour().equals(selectedCol))
-			return selectedCol;
-		selectedCol = nodes[0][4].getColour();
-		if (nodes[0][5].getColour().equals(selectedCol) && nodes[0][6].getColour().equals(selectedCol))
-			return selectedCol;	
-		
-		//check inner layer
-		selectedCol = nodes[1][0].getColour();
-		if (nodes[1][1].getColour().equals(selectedCol) && nodes[1][2].getColour().equals(selectedCol))
-			return selectedCol;
-		selectedCol = nodes[1][0].getColour();
-		if (nodes[1][7].getColour().equals(selectedCol) && nodes[1][6].getColour().equals(selectedCol))
-			return selectedCol;
-		selectedCol = nodes[1][4].getColour();
-		if (nodes[1][3].getColour().equals(selectedCol) && nodes[1][2].getColour().equals(selectedCol))
-			return selectedCol;
-		selectedCol = nodes[1][4].getColour();
-		if (nodes[1][5].getColour().equals(selectedCol) && nodes[1][6].getColour().equals(selectedCol))
-			return selectedCol;
-		
-		//when nothing is true
-		return "none";
-	}
 	
 	//check if a specific node is part of a triple
 	public static boolean singleTriple(int layer, int index){
@@ -317,9 +285,7 @@ public class Data {
 		String[] innerCol = s.nextLine().split(",");
 		s.close();
 		
-		if (data[0].equals("SANDBOX"))
-			setState(GameState.SANDBOX);
-		else if (data[0].equals("PLACEMENT"))
+		if (data[0].equals("PLACEMENT"))
 			setState(GameState.PLACEMENT);
 		else if (data[0].equals("MOVEMENT"))
 			setState(GameState.MOVEMENT);
@@ -328,7 +294,7 @@ public class Data {
 		else if (data[0].equals("ENDGAME"))
 			setState(GameState.ENDGAME);
 		
-		if (data[1].equals("blue"))
+		if (data[1].equals("true"))
 			isBlueTurn = true;
 		else isBlueTurn = false;
 
@@ -338,7 +304,7 @@ public class Data {
 
 		for (int i = 0; i < 8; i++){
 			nodes[0][i].setColour(outerCol[i]);
-			nodes[1][i].setColour(outerCol[i]);
+			nodes[1][i].setColour(innerCol[i]);
 		}
 	}
 }
