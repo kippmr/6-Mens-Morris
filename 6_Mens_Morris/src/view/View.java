@@ -80,7 +80,7 @@ public class View extends Application{
 			closeProgram();
 		});
 		// set labels
-		Label label1 = new Label("Six Men's Morris\n ");
+		Label label1 = new Label("Six Men's Morris\n");
 		label1.setFont(new Font(35));
 		//Label label2 = new Label("Change the turn by clicking a piece on the side");
 		curState = new Label();
@@ -96,6 +96,7 @@ public class View extends Application{
 		loadBtn = new Button();
 		loadBtn.setText("LOAD GAME");
 		loadBtn.setOnAction(e ->  {
+		Data.reset();
 		try {
 			Data.load();
 		} catch (Exception e1) {
