@@ -6,12 +6,19 @@ import javafx.scene.control.Alert.AlertType;
 import model.Data;
 
 
+/**
+ * checks if a given board has a valid set-up
+ */
 public class CheckHandler implements EventHandler {
 	private int redCount;
 	private int blueCount;
 	
+	/* (non-Javadoc)
+	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
+	 */
 	@Override
 	public void handle(Event arg0) {
+		//counting Node colours
 		redCount = 0;
 		blueCount = 0;
 		
@@ -28,6 +35,7 @@ public class CheckHandler implements EventHandler {
 		alert.setTitle("Check");
 		alert.setHeaderText("Validation");
 
+		//check if board has legal or illegal set up
 		if (redCount <= 6 && blueCount <= 6)
 			alert.setContentText("This setup is valid.");
 		else

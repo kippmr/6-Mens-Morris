@@ -6,6 +6,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 
+/**
+ * contains data of board and nodes
+ */
 public class Data {
 
 	// Node variables
@@ -25,37 +28,62 @@ public class Data {
 	// Current state
 	private static GameState curState;
 	
+	/**
+	 * @return number of pieces during placement phase
+	 */
 	public static int getNumPieces(){
 		return numPieces;
 	}
 
+	/**
+	 * @return number of blue Nodes
+	 */
 	public static int getBlueCount(){
 		return blueCount;
 	}
 	
+	/**
+	 * @return numbe of red Nodes
+	 */
 	public static int getRedCount(){
 		return redCount;
 	}
 	
 	// Set state
+	/**
+	 * @param nextState - set game phase to this
+	 */
 	public static void setState(GameState nextState){
 		curState = nextState;
 	}
 	
 	// Get current state
+	/**
+	 * @return current game phase
+	 */
 	public static GameState getState(){
 		return curState;
 	}
 	
-	// Return colour of selected node
+	/**
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 * @return colour of selected node
+	 */
 	public static String getColour(int layer, int index){
 		return nodes[layer][index].getColour();
 	}
 	
-	// Set colour of selected node
+	/**
+	 * Set colour of selected node
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 */
 	public static void setColour(int layer, int index){
+		//set turn colour
 		String col = (isBlueTurn)? "blue" : "red";
 		nodes[layer][index].setColour(col);
+		//increase counters
 		if (curState.equals(GameState.PLACEMENT)){
 			if (col.equals("blue")) blueCount++;
 			else redCount++;
@@ -63,22 +91,42 @@ public class Data {
 		}
 	}
 	
+	/**
+	 * make new moveNode
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 * @param col - colour of turn
+	 */
 	public static void setMove(int layer, int index, String col){
 		moveNode = new Node(layer, index, col);
 	}
 	
+	/**
+	 * check if moveNode is adjacent to next position
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 * @return true if Nodes are adjacent
+	 */
 	public static boolean canMove(int layer, int index){
 		return moveNode.isConnected(nodes[layer][index]);
 	}
 
+	/**
+	 * swaps coloured Node with 'black' Node
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 */
 	public static void swapNode(int layer, int index) {
 		nodes[moveNode.getLayer()][moveNode.getPosition()].setColour("black");
 		nodes[layer][index].setColour(moveNode.getColour());
 		moveNode = null;
 	}
 	
-	// return all nodes to black
+	/**
+	 * return all nodes to black and move counters to zero
+	 */
 	public static void reset(){
+		//change colour of all Nodes to 'black'
 		for (int i = 0; i < nodes.length; i++){
 			for (int j = 0; j < nodes[i].length; j++){
 				nodes[i][j] = new Node(i,j, "black");
@@ -92,17 +140,25 @@ public class Data {
 		chooseTurn();
 	}
 	
-	// Get turn
+	/**
+	 * Get turn
+	 * @return true if it is 'blue's turn
+	 */
 	public static boolean getTurn(){
 		return isBlueTurn;
 	}
 	
-	// Next turn
+	/**
+	 * Next turn
+	 */
 	public static void changeTurn(){
 		isBlueTurn = !isBlueTurn;
 	}
 	
-	// Force different turn
+	/**
+	 * Force different turn
+	 * @param col - colour of next turn
+	 */
 	public static void changeTurn(String col){
 		if (col.equals("blue"))
 			isBlueTurn = true;
@@ -110,17 +166,23 @@ public class Data {
 			isBlueTurn = false;
 	}
 	
-	// Randomize turn order
+	/**
+	 * Randomize turn order
+	 */
 	private static void chooseTurn(){
 		Random random = new Random();
 		isBlueTurn = random.nextInt(2) == 0;
 	}
 	
-	//determine if a player has won
+	/**
+	 * determine if a player has won
+	 * @return true if a player has met win conditions
+	 */
 	public static boolean checkWin(){
+		//two pieces remaining after placement phase
 		if ((redCount == 2 || blueCount == 2) && numPieces == 12) return true;
 		String col = (isBlueTurn)? "blue" : "red";
-		
+		//check if all cooloured pieces can move
 		for (int i = 0; i < nodes.length; i++) {
 			for (int j = 0; j < nodes[i].length; j++) {
 				if (nodes[i][j].getColour().equals(col)){
@@ -132,7 +194,12 @@ public class Data {
 		return true;
 	}
 	
-	//check if a specific node is part of a triple
+	/**
+	 * check if a specific node is part of a triple
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 * @return true if Node is part of a triple
+	 */
 	public static boolean singleTriple(int layer, int index){
 		String selectedCol = nodes[layer][index].getColour();
 		
@@ -213,19 +280,34 @@ public class Data {
 		return false;
 	}
 	
-	//perform a mill
+	/**
+	 * perform a mill
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 */
 	public static void mill(int layer, int index){
+		//change colour to black
 		String col = nodes[layer][index].getColour();
 		nodes[layer][index].setColour("black");
+		//reduce colour count
 		if (col.equals("red")) redCount--;
 		else blueCount--;
 	}
 
+	/**
+	 * @return true if moveNode has a value
+	 */
 	public static boolean hasMove() {
 		return moveNode != null;
 	}
 	
+	/**
+	 * @param layer - layer of Node
+	 * @param index - position of Node
+	 * @return true if a Node can move
+	 */
 	private static boolean ableToMove(int layer, int index){
+		//odd positioned Node check left and right
 		if (index % 2 == 1){
 			if (layer == 1){
 				if (nodes[0][index].getColour().equals("black")) return true;
@@ -234,11 +316,12 @@ public class Data {
 				if (nodes[1][index].getColour().equals("black")) return true;
 			}
 		}
+		// position 0 case
 		if (index == 0){
 			if (nodes[layer][7].getColour().equals("black")) return true;
 		}
 		else if (nodes[layer][index-1].getColour().equals("black")) return true;
-		
+		//position 7 case
 		if (index == 7){
 			if (nodes[layer][0].getColour().equals("black")) return true;
 		}
@@ -247,7 +330,11 @@ public class Data {
 		return false;
 	}
 
+	/**
+	 * save game to savefile.txt in root
+	 */
 	public static void save() {
+		//move data into csv style string
 		String out = "";
 		out = out.concat(curState.toString() + ",");
 		out = out.concat(Boolean.toString(isBlueTurn) + ",");
@@ -276,7 +363,12 @@ public class Data {
 		}
 	}
 	
+	/**
+	 * load game from savefile.txt in root
+	 * @throws FileNotFoundException
+	 */
 	public static void load() throws FileNotFoundException{
+		//load data from file into memory
 		File f = new File("savefile.txt");
 		Scanner s = new Scanner(f);
 		String[] data = s.nextLine().split(",");
@@ -284,6 +376,7 @@ public class Data {
 		String[] innerCol = s.nextLine().split(",");
 		s.close();
 		
+		//restore game state
 		if (data[0].equals("PLACEMENT"))
 			setState(GameState.PLACEMENT);
 		else if (data[0].equals("MOVEMENT"))
@@ -293,14 +386,17 @@ public class Data {
 		else if (data[0].equals("ENDGAME"))
 			setState(GameState.ENDGAME);
 		
+		//restore turn
 		if (data[1].equals("true"))
 			isBlueTurn = true;
 		else isBlueTurn = false;
 
+		//restore counts
 		numPieces = Integer.parseInt(data[2]);
 		blueCount = Integer.parseInt(data[3]);
 		redCount = Integer.parseInt(data[4]);
 
+		//restore board
 		for (int i = 0; i < 8; i++){
 			nodes[0][i].setColour(outerCol[i]);
 			nodes[1][i].setColour(innerCol[i]);

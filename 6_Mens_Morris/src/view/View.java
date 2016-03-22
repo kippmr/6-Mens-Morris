@@ -1,5 +1,5 @@
 package view;
-// import statements
+
 import controller.CheckHandler;
 import controller.ColourHandler;
 import controller.NodeHandler;
@@ -19,6 +19,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
+/**
+ * gui for user
+ */
 public class View extends Application{
 	//window size
 	final private int HEIGHT = 700;
@@ -61,6 +64,9 @@ public class View extends Application{
 	}
 	
 	// Start Java fx stage
+	/* (non-Javadoc)
+	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	 */
 	@Override 
 	public void start(Stage primaryStage) throws Exception{
 		
@@ -176,6 +182,7 @@ public class View extends Application{
 		 * Center: Board
 		 */
 		
+		//Sandbox mode
 		BorderPane layout2 = new BorderPane();
 		layout2.setPadding(new Insets(15, 15, 15, 15));
 		HBox bottomPane = new HBox(50);
@@ -194,6 +201,7 @@ public class View extends Application{
 		layout2.setStyle(boardImage);
 		sandboxScene = new Scene(layout2,WIDTH, HEIGHT);
 		
+		//Game mode
 		BorderPane layout3 = new BorderPane();
 		layout3.setPadding(new Insets(15, 15, 15, 15));
 		HBox bottomGamePane = new HBox(50);
@@ -227,7 +235,10 @@ public class View extends Application{
 		System.exit(0);}
 	}
 	
-	// Place Nodes on the grid
+	/**
+	 * Place Nodes on the grid
+	 * @return GridPane of Nodes
+	 */
 	private GridPane addGrid(){
 		GridPane boardPane = new GridPane();
 		boardPane.add(nodes[0][0], 0, 0);
@@ -252,11 +263,12 @@ public class View extends Application{
 		return boardPane;
 	}
 	
-	// Change node icons according to value
 	/**
 	 * Update function which updates the game board when called
+	 * Change node icons according to value
 	 */
 	public static void update(){
+		//set colours of each node
 		for (int i = 0; i < LAYERS; i++) {
 			for (int j = 0; j < POSITIONS; j++){
 				String col = Data.getColour(i, j);
@@ -269,6 +281,7 @@ public class View extends Application{
 			}
 		}
 		
+		//highlight turn's colour
 		if (Data.getTurn()){
 			blue.setStyle(blueHighlight);
 			red.setStyle(redNode);
@@ -277,6 +290,7 @@ public class View extends Application{
 			blue.setStyle(blueNode);
 			red.setStyle(redHighlight);
 		}
+		//update game phase label
 		switch(Data.getState()){
 		case PLACEMENT:
 			if (Data.getTurn())
