@@ -6,24 +6,23 @@
 * Will: Model
 * Ben: View
 
-## Controller
+#What is it?
+-----------
+Six Men’s Morris is a classic board game, implemented in Java with JavaFX.
 
-CheckHandler
+#The Latest Version
+------------------
+The latest version  of Six Men’s Morris includes sandbox mode, a load/save feature, as well as turn based gameplay.
 
-ColourHandler
+#Documentation
+-------------
+The documentation available as of the date of this release is
+included in the main directory of this project.
 
-NodeHandler
+#Installation
+------------
+To play the game download the .jar file and enjoy!
 
-ResetHandler
-
-## Model
-
-Data
-
-Node
-  
-## View
-
-View
-
-ConfirmBox 
+#Licensing
+---------
+Our implementation of Six Men’s Morris is protected under the MIT license
