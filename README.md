@@ -1,4 +1,4 @@
-# 6-Mens-Morris
+# 6 Men's Morris
 6 Men's Morris is a classic board game.
 We implemented the game in Java with the JavaFX library.
 
