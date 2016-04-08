@@ -2,6 +2,8 @@
 6 Men's Morris is a classic board game.
 We implemented the game in Java with the JavaFX library.
 
+https://raw.github.com/kippmr6/6-Mens-Morris/master/board.png
+
 ### Current Work Division:
 * Matt: Controller
 * Will: Model
