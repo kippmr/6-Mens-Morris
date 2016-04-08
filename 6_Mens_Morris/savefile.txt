@@ -1,3 +1,0 @@
-ENDGAME,false,12,6,2
-blue,black,red,black,black,black,blue,black
-blue,black,blue,red,black,black,blue,blue

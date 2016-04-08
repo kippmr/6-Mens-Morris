@@ -41,14 +41,20 @@ public class NodeHandler implements EventHandler {
 			
 		case PLACEMENT:
 			placementPhase();
+			Data.moveAI(); // tells AI to take a turn
+			Data.moveAI(); // if a mill was made, AI goes again
 			break;
 			
 		case MOVEMENT:
 			movementPhase();
+			Data.moveAI(); // tells AI to take a turn
+			Data.moveAI(); // if a mill was made, AI goes again
 			break;
 			
 		case MILL:
 			millPhase();
+			Data.moveAI(); // tells AI to take a turn
+			Data.moveAI(); // if a mill was made, AI goes again
 			break;
 		}
 	}

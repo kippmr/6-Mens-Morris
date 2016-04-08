@@ -33,7 +33,7 @@ public class View extends Application{
 	private Stage window;
 	private Scene mainScene,sandboxScene, gameScene;
 	// Menu Buttons
-	private Button newGameBtn, loadBtn, sandBox, exitButton, quitButton;
+	private Button onePlayerBtn, twoPlayerBtn, loadBtn, sandBox, exitButton, quitButton;
 	// State label
 	private static Label curState;
 	// Buttons for controller logic
@@ -79,19 +79,35 @@ public class View extends Application{
 			e.consume();
 			closeProgram();
 		});
+		
 		// set labels
 		Label label1 = new Label("Six Men's Morris\n");
 		label1.setFont(new Font(35));
 		//Label label2 = new Label("Change the turn by clicking a piece on the side");
 		curState = new Label();
+		
 		// Creating button
-		newGameBtn= new Button();
-		newGameBtn.setText("NEW GAME");
-		newGameBtn.setOnAction(e -> {
+		
+		//one player button
+		onePlayerBtn = new Button();
+		onePlayerBtn.setText("One Player");
+		onePlayerBtn.setOnAction(e -> {
+			Data.reset();
+			Data.setAI(true);
+			View.update();
+			window.setScene(gameScene);
+		});
+		
+		//two player button
+		twoPlayerBtn = new Button();
+		twoPlayerBtn.setText("Two Player");
+		twoPlayerBtn.setOnAction(e -> {
 		Data.reset();
+		Data.setAI(false);
 		View.update();
 		window.setScene(gameScene);
 		});
+		
 		// Load Previous Game
 		loadBtn = new Button();
 		loadBtn.setText("LOAD GAME");
@@ -171,7 +187,7 @@ public class View extends Application{
 		
 		// Main Screen layout
 		VBox layout1 = new VBox(20);
-		layout1.getChildren().addAll(label1,newGameBtn,loadBtn,sandBox,exitButton);
+		layout1.getChildren().addAll(label1,onePlayerBtn,twoPlayerBtn,loadBtn,sandBox,exitButton);
 		// Removed credits for simplicity
 		mainScene = new Scene(layout1,WIDTH, HEIGHT);
 		

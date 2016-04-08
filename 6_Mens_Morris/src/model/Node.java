@@ -63,7 +63,7 @@ public class Node extends Button{
 			if (Math.abs(this.position - other.position) == 1 || Math.abs(this.position - other.position) == 7)
 				return true;
 		}
-		else if (this.layer != other.layer){
+		else if (this.layer != other.layer && position%2 == 1){
 			if (this.position == other.position)
 				return true;
 		}

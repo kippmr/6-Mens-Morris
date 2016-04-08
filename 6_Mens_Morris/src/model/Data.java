@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.util.Random;
 import java.util.Scanner;
 
+import controller.AIHandler;
+
 
 /**
  * contains data of board and nodes
@@ -28,6 +30,10 @@ public class Data {
 	
 	// Current state
 	private static GameState curState;
+	
+	// AI variables
+	private static boolean isAIOn = false;
+	private static AIHandler aiBot = null;
 	
 	/**
 	 * @return number of pieces during placement phase
@@ -138,6 +144,8 @@ public class Data {
 		redCount = 0;
 		blueCount = 0;
 		moveNode = null;
+		isAIOn = false;
+		aiBot = null;
 		chooseTurn();
 	}
 	
@@ -341,7 +349,8 @@ public class Data {
 		out = out.concat(Boolean.toString(isBlueTurn) + ",");
 		out = out.concat(Integer.toString(numPieces) + ",");
 		out = out.concat(Integer.toString(blueCount) + ",");
-		out = out.concat(Integer.toString(redCount) + "\n");
+		out = out.concat(Integer.toString(redCount) + ",");
+		out = out.concat(Boolean.toString(isAIOn) + "\n");
 		
 		for (int i = 0; i < nodes[0].length-1; i++) {
 			out = out.concat(nodes[0][i].getColour() + ",");
@@ -396,6 +405,7 @@ public class Data {
 		numPieces = Integer.parseInt(data[2]);
 		blueCount = Integer.parseInt(data[3]);
 		redCount = Integer.parseInt(data[4]);
+		setAI(Boolean.parseBoolean(data[5]));
 
 		//restore board
 		for (int i = 0; i < 8; i++){
@@ -404,5 +414,21 @@ public class Data {
 		}
 		
 		moveNode = null;
+	}
+	
+	/**
+	 * AI setup on new game and load
+	 * @param b - true if AI is playing
+	 */
+	public static void setAI(boolean b){
+		isAIOn = b;
+		if (b) aiBot = new AIHandler();
+	}
+	
+	/**
+	 * tell AI to make a move
+	 */
+	public static void moveAI(){
+		if (isAIOn) aiBot.makeMove(isBlueTurn);
 	}
 }
